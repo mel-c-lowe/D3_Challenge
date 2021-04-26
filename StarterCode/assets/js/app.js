@@ -37,22 +37,27 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
 
     // Set scales for the data
     var xPoveryScale = d3.scaleLinear().range([0, width]);
-    var ySmokerScale = d3.scaleLinear().range([height, 0]);
+    var yAgeScale = d3.scaleLinear().range([height, 0]);
 
-    // Find maxes for each axis
-    var ageMax = d3.max(healthData, d => d.age);
-    var povertyMax = d3.max(healthData, d => d.poverty);
+    // // Find maxes for each axis
+    // var ageMax = d3.max(healthData, d => d.age);
+    // var povertyMax = d3.max(healthData, d => d.poverty);
 
     // Create axes and append to chartGroup
     var bottomAxis = d3.axisBottom(xPoveryScale);
-    var leftAxis = d3.axisLeft(ySmokerScale);
+    var leftAxis = d3.axisLeft(yAgeScale);
 
     chartGroup.append("g")
-        .attr("transform", `translate(0, ${height}0)`)
+        .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
     
     chartGroup.append("g")
         .call(leftAxis);
-        
+
+    // Testing the data in line chart format before scatterplot
+    var line1 = d3.line()
+        .x(d => xPoveryScale(d.poverty))
+        .y(d => yAgeScale(d.age))
+
 
 })
