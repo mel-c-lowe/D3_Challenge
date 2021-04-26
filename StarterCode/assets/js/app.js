@@ -28,4 +28,31 @@ var chartGroup = svg.append("g")
 // Import data from data.csv
 d3.csv("assets/data/data.csv").then(function(healthData) {
     console.log(healthData)
+
+    // Select and format data to be used in chart
+    healthData.forEach(function(data) {
+        data.poverty = +data.poverty;
+        data.age = +data.age;
+    });
+
+    // Set scales for the data
+    var xPoveryScale = d3.scaleLinear().range([0, width]);
+    var ySmokerScale = d3.scaleLinear().range([height, 0]);
+
+    // Find maxes for each axis
+    var ageMax = d3.max(healthData, d => d.age);
+    var povertyMax = d3.max(healthData, d => d.poverty);
+
+    // Create axes and append to chartGroup
+    var bottomAxis = d3.axisBottom(xPoveryScale);
+    var leftAxis = d3.axisLeft(ySmokerScale);
+
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${height}0)`)
+        .call(bottomAxis);
+    
+    chartGroup.append("g")
+        .call(leftAxis);
+        
+
 })
