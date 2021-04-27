@@ -41,8 +41,8 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
 
     // Set scales for the data and append to graph
     var xPoveryScale = d3.scaleLinear()
-        .range([0, width])
-        .domain([0, povertyMax]);
+        .range([8, width])
+        .domain([8, povertyMax]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xPoveryScale));
@@ -61,7 +61,7 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .append("circle")
             .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
             .attr("cy", function (d) { return yAgeScale(d.age); } )
-            .attr("r", 1.5)
+            .attr("r", 5)
             .style("fill", "green")
 
 
