@@ -59,5 +59,10 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .x(d => xPoveryScale(d.poverty))
         .y(d => yAgeScale(d.age))
 
+    // Append the path
+    chartGroup.data([healthData]).append("path")
+        .attr("d", line1)
+        .classed("line green", true);
+
 
 })
