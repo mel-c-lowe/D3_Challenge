@@ -16,7 +16,7 @@ var width = svgWidth - margin.left - margin.right;
 var height = svgheight - margin.top - margin.bottom;
 
 // Create wrapper and append svg to index.html
-var svg = d3.select("body")
+var svg = d3.select("#scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgheight);
@@ -35,13 +35,18 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         data.age = +data.age;
     });
 
-    // Set scales for the data
-    var xPoveryScale = d3.scaleLinear().range([0, width]);
-    var yAgeScale = d3.scaleLinear().range([height, 0]);
+    // Find maxes for each axis
+    var ageMax = d3.max(healthData, d => d.age);
+    var povertyMax = d3.max(healthData, d => d.poverty);
 
-    // // Find maxes for each axis
-    // var ageMax = d3.max(healthData, d => d.age);
-    // var povertyMax = d3.max(healthData, d => d.poverty);
+    // Set scales for the data
+    var xPoveryScale = d3.scaleLinear()
+        .range([0, width])
+        .domain([0, povertyMax]);
+    
+    var yAgeScale = d3.scaleLinear()
+        .range([height, 0])
+        .domain([ageMax, 0]);
 
     // Create axes and append to chartGroup
     var bottomAxis = d3.axisBottom(xPoveryScale);
