@@ -39,35 +39,53 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
     var ageMax = d3.max(healthData, d => d.age);
     var povertyMax = d3.max(healthData, d => d.poverty);
 
-    // Set scales for the data
+    // Set scales for the data and append to graph
     var xPoveryScale = d3.scaleLinear()
         .range([0, width])
         .domain([0, povertyMax]);
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xPoveryScale));
     
     var yAgeScale = d3.scaleLinear()
         .range([height, 0])
         .domain([ageMax, 0]);
+    svg.append("g")
+        .call(d3.axisLeft(yAgeScale));
 
-    // Create axes and append to chartGroup
-    var bottomAxis = d3.axisBottom(xPoveryScale);
-    var leftAxis = d3.axisLeft(yAgeScale);
+    // Add dots
+    svg.append("g")
+        .selectAll("dot")
+        .data(healthData)
+        .enter()
+        .append("circle")
+            .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
+            .attr("cy", function (d) { return yAgeScale(d.age); } )
+            .attr("r", 1.5)
+            .style("fill", "green")
 
-    chartGroup.append("g")
-        .attr("transform", `translate(0, ${height})`)
-        .call(bottomAxis);
+
+});
+
+// Old code for reference
+
+    // // Create axes and append to chartGroup
+    // var bottomAxis = d3.axisBottom(xPoveryScale);
+    // var leftAxis = d3.axisLeft(yAgeScale);
+
+    // chartGroup.append("g")
+    //     .attr("transform", `translate(0, ${height})`)
+    //     .call(bottomAxis);
     
-    chartGroup.append("g")
-        .call(leftAxis);
+    // chartGroup.append("g")
+    //     .call(leftAxis);
 
-    // Testing the data in line chart format before scatterplot
-    var line1 = d3.line()
-        .x(d => xPoveryScale(d.poverty))
-        .y(d => yAgeScale(d.age))
+    // // Testing the data in line chart format before scatterplot
+    // var line1 = d3.line()
+    //     .x(d => xPoveryScale(d.poverty))
+    //     .y(d => yAgeScale(d.age))
 
-    // Append the path
-    chartGroup.data([healthData]).append("path")
-        .attr("d", line1)
-        .classed("line green", true);
-
-
-})
+    // // Append the path
+    // chartGroup.data([healthData]).append("path")
+    //     .attr("d", line1)
+    //     .classed("line green", true);
