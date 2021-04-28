@@ -1,7 +1,7 @@
 console.log("app2.js loaded")
 
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 40, left: 60},
+var margin = {top: 20, right: 20, bottom: 50, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
@@ -29,17 +29,31 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
   console.log(ageMax, povertyMax)
 
   // Add X axis
-  var x = d3.scaleLinear().domain([0, (povertyMax + 5)]).range([0, width]);
+  var x = d3.scaleLinear().domain([4, (povertyMax + 5)]).range([0, width]);
   svg
     .append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
 
   // Add Y axis
-  var y = d3.scaleLinear().domain([0, (ageMax + 5)]).range([ height, 0]);
+  var y = d3.scaleLinear().domain([15, (ageMax + 5)]).range([ height, 0]);
   svg
     .append("g")
     .call(d3.axisLeft(y));
+
+  // Add X axis label:
+  svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", height + margin.top + 20)
+      .text("Poverty (%)");
+
+  // Y axis label:
+  svg.append("text")
+      .attr("text-anchor", "middle")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -margin.left+20)
+      .attr("x", -(height / 2))
+      .text("Age")
 
   // Add dots
   svg.append("g")
@@ -51,23 +65,6 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
       .attr("cy", function (d) { return y(d.age); } )
       .attr("r", 5)
       .style("fill", "green")
-
-  // Add X axis label:
-  svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("x", width)
-      .attr("y", height + margin.top + 20)
-      .text("X axis title");
-
-  // Y axis label:
-  svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left+20)
-      .attr("x", -margin.top)
-      .text("Y axis title")
-
-
 
 
 
