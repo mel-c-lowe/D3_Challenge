@@ -56,17 +56,19 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
       .text("Age")
 
   // Add dots
-  svg.append("g")
-  .selectAll("dot")
-  .data(healthData)
-  .enter()
-  .append("circle")
-      .attr("cx", function (d) { return x(d.poverty); } )
-      .attr("cy", function (d) { return y(d.age); } )
-      .attr("r", 10)
-      .style("fill", "green")
-      .append("text")
-        .text("A")
+  var gdots = svg.append("g")
+    .selectAll("dot")
+    .data(healthData)
+    .enter()
+    .append("circle")
+        .attr("cx", function (d) { return x(d.poverty); } )
+        .attr("cy", function (d) { return y(d.age); } )
+        .attr("r", 10)
+        .style("fill", "green")
+  
+  gdots.append("text")
+    .selectAll("dot")
+    .text("A")
       
 
 

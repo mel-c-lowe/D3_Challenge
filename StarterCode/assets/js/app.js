@@ -67,40 +67,25 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .text("Age")
 
     // Create variable to hold code for circles    
-    var gdots = svg.selectAll("g.dot")
+    var circleGroup = svg.selectAll("g circle")
                     .data(healthData)
                     .enter()
                     .append("g");
 
-    // Add circles to gdots variable
-    gdots.append("circle")
+    // Describe the circles to plot and where
+    var circleLoc = circleGroup.append("circle")
         .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
         .attr("cy", function (d) { return yAgeScale(d.age); } )
         .attr("r", 5)
-        .style("fill", "green");
-
-    var labels = healthData.forEach(function(data) {
-        data.abbr = +data.abbr
-    });
-    console.log(labels);    
+        .style("fill", "green");   
     
     // Add text to circles
-    gdots.append("text")
-        .text(function (d) { return (d.abbr)})
-        // console.log(d => d.abbr)
-        // .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
-        // .attr("cy", function (d) { return yAgeScale(d.age); } )
+    var circleText = circleGroup.append("text")
+        .text(d => d.abbr)
+        .attr("dx", function (d) { return xPoveryScale(d.poverty); } )
+        .attr("dy", function (d) { return yAgeScale(d.age); } )
 
-    // // Add dots
-    // svg.append("g")
-    //     .selectAll("dot")
-    //     .data(healthData)
-    //     .enter()
-    //     .append("circle")
-    //         .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
-    //         .attr("cy", function (d) { return yAgeScale(d.age); } )
-    //         .attr("r", 5)
-    //         .style("fill", "green")
+    
 
 
 });
