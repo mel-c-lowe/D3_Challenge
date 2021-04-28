@@ -27,31 +27,31 @@ var svg = d3.select("#scatter")
 d3.csv("assets/data/data.csv").then(function(healthData) {
     console.log(healthData)
 
-    // Select and format data to be used in chart
+    // Select and format data for chart
     healthData.forEach(function(data) {
         data.poverty = +data.poverty;
-        data.age = +data.age;
+        data.healthcare = +data.healthcare;
     });
 
-    // Find maxes for each axis
-    var ageMax = d3.max(healthData, d => d.age);
-    var povertyMax = d3.max(healthData, d => d.poverty);
-    console.log(ageMax, povertyMax);
+    // Find maxes for axis
+    var yMax = d3.max(healthData, d => d.healthcare);
+    var xMax = d3.max(healthData, d => d.poverty);
+    console.log(yMax, xMax)
 
     // Set scales for the data and append to graph
-    var xPoveryScale = d3.scaleLinear()
-        .domain([8, povertyMax])
-        .range([8, width]);
+    var xScale = d3.scaleLinear()
+        .domain([0, (xMax + 2)])
+        .range([0, width]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xPoveryScale));
+        .call(d3.axisBottom(xScale));
     
-    var yAgeScale = d3.scaleLinear()
-        .domain([20, (ageMax + 5)])
+    var yScale = d3.scaleLinear()
+        .domain([0, (yMax + 2)])
         .range([height, 0]);
     svg.append("g")
         .attr("tranform", "translate(" + width + ")")
-        .call(d3.axisLeft(yAgeScale));
+        .call(d3.axisLeft(yScale));
 
     // Add x axis label    
     svg.append("text")
@@ -64,7 +64,7 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .attr("x", -(height/2))
         .attr("y", -margin.left+20)
         .attr("transform", "rotate(-90)")
-        .text("Age")
+        .text("Healthcare")
 
     // Create variable to hold code for circles    
     var circleGroup = svg.selectAll("g circle")
@@ -74,16 +74,28 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
 
     // Describe the circles to plot and where
     var circleLoc = circleGroup.append("circle")
-        .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
-        .attr("cy", function (d) { return yAgeScale(d.age); } )
-        .attr("r", 5)
+        .attr("cx", function (d) { return xScale(d.poverty); } )
+        .attr("cy", function (d) { return yScale(d.healthcare); } )
+        .attr("r", 10)
+        .attr("opacity", .60)
         .style("fill", "green");   
     
     // Add text to circles
     var circleText = circleGroup.append("text")
         .text(d => d.abbr)
-        .attr("dx", function (d) { return xPoveryScale(d.poverty); } )
-        .attr("dy", function (d) { return yAgeScale(d.age); } )
+        .attr("dx", d => xScale(d.poverty))
+        .attr("dy", d => yScale(d.healthcare))
+        .classed("stateText", true)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")
+        .attr("alignment-baseline", "central")
+
+
+    // // Add text to circles
+    // var circleText = circleGroup.append("text")
+    //     .text(d => d.abbr)
+    //     .attr("dx", d => d.poverty)
+    //     .attr("dy", d => d.healthcare)
 
     
 
