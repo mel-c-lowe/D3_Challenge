@@ -53,18 +53,54 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .attr("tranform", "translate(" + width + ")")
         .call(d3.axisLeft(yAgeScale));
 
-    // Add dots
-    svg.append("g")
-        .selectAll("dot")
-        .data(healthData)
-        .enter()
-        .append("circle")
-            .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
-            .attr("cy", function (d) { return yAgeScale(d.age); } )
-            .attr("r", 5)
-            .style("fill", "green")
+    // Add x axis label    
+    svg.append("text")
+        .attr("x", (width/2))
+        .attr("y", height + margin.top + 20)
+        .text("Poverty (%)");
+
+    // Add y axis label
+    svg.append("text")
+        .attr("x", -(height/2))
+        .attr("y", -margin.left+20)
+        .attr("transform", "rotate(-90)")
+        .text("Age")
+
+    // Create variable to hold code for circles    
+    var gdots = svg.selectAll("g.dot")
+                    .data(healthData)
+                    .enter()
+                    .append("g");
+
+    // Add circles to gdots variable
+    gdots.append("circle")
+        .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
+        .attr("cy", function (d) { return yAgeScale(d.age); } )
+        .attr("r", 5)
+        .style("fill", "green");
+
+    var labels = healthData.forEach(function(data) {
+        data.abbr = +data.abbr
+    });
+    console.log(labels);    
+    
+    // Add text to circles
+    gdots.append("text")
+        .text(function (d) { return (d.abbr)})
+        // console.log(d => d.abbr)
+        // .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
+        // .attr("cy", function (d) { return yAgeScale(d.age); } )
+
+    // // Add dots
+    // svg.append("g")
+    //     .selectAll("dot")
+    //     .data(healthData)
+    //     .enter()
+    //     .append("circle")
+    //         .attr("cx", function (d) { return xPoveryScale(d.poverty); } )
+    //         .attr("cy", function (d) { return yAgeScale(d.age); } )
+    //         .attr("r", 5)
+    //         .style("fill", "green")
 
 
 });
-
-
