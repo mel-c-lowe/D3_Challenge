@@ -61,10 +61,10 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
 
     // Add y axis label
     svg.append("text")
-        .attr("x", -(height/2))
+        .attr("x", -(height/1.5))
         .attr("y", -margin.left+20)
         .attr("transform", "rotate(-90)")
-        .text("Healthcare")
+        .text("Lacks Healthcare (%)")
 
     // Create variable to hold code for circles    
     var circleGroup = svg.selectAll("g circle")
