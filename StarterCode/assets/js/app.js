@@ -23,7 +23,7 @@ var svg = d3.select("#scatter")
 
 // Translate to center the chart when it will appear on the page
 var chartGroup = svg.append("g")
-    .attr("transfomr", `translate(${margin.left}, ${margin.top})`);
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import data from data.csv
 d3.csv("assets/data/data.csv").then(function(healthData) {
@@ -38,6 +38,7 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
     // Find maxes for each axis
     var ageMax = d3.max(healthData, d => d.age);
     var povertyMax = d3.max(healthData, d => d.poverty);
+    console.log(ageMax);
 
     // Set scales for the data and append to graph
     var xPoveryScale = d3.scaleLinear()
@@ -48,9 +49,10 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .call(d3.axisBottom(xPoveryScale));
     
     var yAgeScale = d3.scaleLinear()
-        .range([height, 0])
+        .range([0, povertyMax])
         .domain([ageMax, 0]);
     svg.append("g")
+        .attr("tranform", "translate(" + width + ")")
         .call(d3.axisLeft(yAgeScale));
 
     // Add dots
