@@ -2,14 +2,14 @@
 console.log("app.js loaded")
 
 // Set up chart area
-var svgWidth = 960;
-var svgheight = 500;
+var svgWidth = 460;
+var svgheight = 400;
 
 var margin = {
-    top: 30,
-    right: 30,
-    bottom: 30,
-    left: 30
+    top: 20,
+    right: 20,
+    bottom: 50,
+    left: 60
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -18,12 +18,10 @@ var height = svgheight - margin.top - margin.bottom;
 // Create wrapper and append svg to index.html
 var svg = d3.select("#scatter")
     .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgheight);
-
-// Translate to center the chart when it will appear on the page
-var chartGroup = svg.append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+        .attr("width", svgWidth)
+        .attr("height", svgheight)
+    .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import data from data.csv
 d3.csv("assets/data/data.csv").then(function(healthData) {
@@ -38,19 +36,19 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
     // Find maxes for each axis
     var ageMax = d3.max(healthData, d => d.age);
     var povertyMax = d3.max(healthData, d => d.poverty);
-    console.log(ageMax);
+    console.log(ageMax, povertyMax);
 
     // Set scales for the data and append to graph
     var xPoveryScale = d3.scaleLinear()
-        .range([8, width])
-        .domain([8, povertyMax]);
+        .domain([8, povertyMax])
+        .range([8, width]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xPoveryScale));
     
     var yAgeScale = d3.scaleLinear()
-        .range([0, povertyMax])
-        .domain([ageMax, 0]);
+        .domain([20, (ageMax + 5)])
+        .range([height, 0]);
     svg.append("g")
         .attr("tranform", "translate(" + width + ")")
         .call(d3.axisLeft(yAgeScale));
@@ -69,25 +67,4 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
 
 });
 
-// Old code for reference
 
-    // // Create axes and append to chartGroup
-    // var bottomAxis = d3.axisBottom(xPoveryScale);
-    // var leftAxis = d3.axisLeft(yAgeScale);
-
-    // chartGroup.append("g")
-    //     .attr("transform", `translate(0, ${height})`)
-    //     .call(bottomAxis);
-    
-    // chartGroup.append("g")
-    //     .call(leftAxis);
-
-    // // Testing the data in line chart format before scatterplot
-    // var line1 = d3.line()
-    //     .x(d => xPoveryScale(d.poverty))
-    //     .y(d => yAgeScale(d.age))
-
-    // // Append the path
-    // chartGroup.data([healthData]).append("path")
-    //     .attr("d", line1)
-    //     .classed("line green", true);

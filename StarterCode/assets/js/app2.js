@@ -36,7 +36,7 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
     .call(d3.axisBottom(x));
 
   // Add Y axis
-  var y = d3.scaleLinear().domain([15, (ageMax + 5)]).range([ height, 0]);
+  var y = d3.scaleLinear().domain([20, (ageMax + 5)]).range([ height, 0]);
   svg
     .append("g")
     .call(d3.axisLeft(y));
@@ -63,9 +63,11 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
   .append("circle")
       .attr("cx", function (d) { return x(d.poverty); } )
       .attr("cy", function (d) { return y(d.age); } )
-      .attr("r", 5)
+      .attr("r", 10)
       .style("fill", "green")
-
+      .append("text")
+        .text("A")
+      
 
 
 });
