@@ -57,7 +57,7 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
     svg.append("text")
         .attr("x", (width/2))
         .attr("y", height + margin.top + 20)
-        .text("Poverty (%)");
+        .text("In Poverty (%)");
 
     // Add y axis label
     svg.append("text")
@@ -89,15 +89,6 @@ d3.csv("assets/data/data.csv").then(function(healthData) {
         .attr("text-anchor", "middle")
         .attr("font-size", "10px")
         .attr("alignment-baseline", "central")
-
-
-    // // Add text to circles
-    // var circleText = circleGroup.append("text")
-    //     .text(d => d.abbr)
-    //     .attr("dx", d => d.poverty)
-    //     .attr("dy", d => d.healthcare)
-
-    
 
 
 });
